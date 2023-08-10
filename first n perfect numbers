@@ -1,0 +1,35 @@
+#include <stdio.h>
+int isPerfect(int n) {
+  int sum = 0;
+  for (int i = 1; i <= n / 2; i++) {
+    if (n % i == 0) {
+      sum += i;
+    }
+  }
+  return (sum == n);
+}
+void printPerfect(int n) {
+  int count = 0;
+  int num = 1; 
+  while (count < n) {
+    if (isPerfect(num)) {
+      printf("%d ", num);
+      count++;
+    }
+    num++;
+  }
+}
+int main() {
+  int n; 
+  printf("Enter a positive integer: ");
+  scanf("%d", &n);
+  if (n <= 0) {
+    printf("Invalid input\n");
+    return -1;
+  }
+  printf("First %d perfect numbers are: ", n);
+  printPerfect(n);
+  printf("\n");
+
+  return 0;
+}
