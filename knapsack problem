@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Item {
+    int w;
+    int v;
+};
+
+int compare(const void *a, const void *b) {
+    struct Item *i1 = (struct Item *)a;
+    struct Item *i2 = (struct Item *)b;
+    double r1 = (double)i1->v / i1->w;
+    double r2 = (double)i2->v / i2->w;
+    return (r1 < r2) ? 1 : (r1 > r2) ? -1 : 0;
+}
+
+double knapsackGreedy(int cap, struct Item items[], int n) {
+    qsort(items, n, sizeof(struct Item), compare);
+
+    int cw = 0;
+    double tv = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        if (cw + items[i].w <= cap) {
+            cw += items[i].w;
+            tv += items[i].v;
+        } else {
+            int rw = cap - cw;
+            tv += (double)rw * items[i].v / items[i].w;
+            break;
+        }
+    }
+
+    return tv;
+}
+
+int main() {
+    int cap, n;
+    printf("Enter capacity of knapsack: ");
+    scanf("%d", &cap);
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+
+    struct Item items[n];
+    for (int i = 0; i < n; i++) {
+        printf("Enter weight and value of item %d: ", i + 1);
+        scanf("%d %d", &items[i].w, &items[i].v);
+    }
+
+    double maxVal = knapsackGreedy(cap, items, n);
+
+    printf("The maximum value that can be achieved in the knapsack is: %lf\n", maxVal);
+    return 0;
+}
